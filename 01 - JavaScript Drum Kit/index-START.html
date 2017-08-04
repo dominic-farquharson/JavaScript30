@@ -7,7 +7,7 @@
 </head>
 <body>
 
-
+<!-- Data attributes, make your own attribute  -->
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -58,6 +58,29 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function playSound(event) {
+    // attribute selector
+    const audio = document.querySelector(`audio[data-key="${event.keyCode}"]`)
+    const key = document.querySelector(`.key[data-key="${event.keyCode}"]`);    
+    if(!audio) return; // stop function from running. Check if there is audio
+
+    audio.currentTime = 0; // rewinds song
+    audio.play(); // plays adio
+    
+    key.classList.add('playing'); // adding a class (toggle, remove, add)
+    
+  };
+
+  function removeTransition(e) {
+    if(e.propertyName !== 'transform') return; // skip if not a transform
+    this.classList.remove('playing');
+
+  };
+  
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  window.addEventListener('keydown', playSound);
 
 </script>
 
